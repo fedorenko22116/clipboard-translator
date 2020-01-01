@@ -8,7 +8,7 @@ pub use t_type::Type;
 use std::borrow::Borrow;
 pub use error::ExecutorError;
 use clipboard::{ClipboardProvider, ClipboardContext};
-use notify_rust::{Notification, NotificationHandle, Error};
+use notify_rust::{Notification, NotificationHandle, Error, NotificationHint};
 
 pub type ExecutorResult<T> = Result<T, error::ExecutorError>;
 
@@ -56,7 +56,9 @@ impl Executor {
             .summary("Translator")
             .subtitle(&context.service)
             .body(&context.text)
-            .icon("info")
+            .icon("Info")
+            .hint(NotificationHint::Category("translation".to_owned()))
+            .hint(NotificationHint::Resident(true))
             .show()
             .map_err(|err| ExecutorError::Notifier(err.to_string()))
             .map(|r| context)
