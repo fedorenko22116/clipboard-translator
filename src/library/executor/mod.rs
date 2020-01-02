@@ -1,6 +1,7 @@
 mod trans;
 mod t_type;
 mod error;
+mod notifier;
 
 use trans::{Translator, TranslateResult};
 use trans::GoogleTranslator;
@@ -14,6 +15,7 @@ pub type ExecutorResult<T> = Result<T, error::ExecutorError>;
 
 pub struct ExecutorResultContext {
     pub text: String,
+    pub lang: String,
     pub source_text: String,
     pub service: String,
 }
@@ -30,18 +32,21 @@ impl Executor {
     }
 
     pub fn show_translation(&self) -> ExecutorResult<ExecutorResultContext> {
-        let translator = self.selected_type.get_translator();
         let source_text = self.get_clipboard_text()?;
+        let translator = self.selected_type.get_translator();
         let context = translator
             .translate(&source_text)
-            .map(|text| ExecutorResultContext {
+            .map(|t| ExecutorResultContext {
                 service: translator.get_name(),
+                lang: t.lang.to_string(),
+                text: t.text,
                 source_text,
-                text
             })
             .map_err(|err| ExecutorError::Translation(err))?;
 
-        self.notify(context)
+        notifier::notify(&context);
+
+        Ok(context)
     }
 
     fn get_clipboard_text(&self) -> ExecutorResult<String> {
@@ -49,18 +54,5 @@ impl Executor {
         context
             .get_contents()
             .map_err(|err| ExecutorError::Clipboard(err.to_string()))
-    }
-
-    fn notify(&self, context: ExecutorResultContext) -> ExecutorResult<ExecutorResultContext> {
-        Notification::new()
-            .summary("Translator")
-            .subtitle(&context.service)
-            .body(&context.text)
-            .icon("Info")
-            .hint(NotificationHint::Category("translation".to_owned()))
-            .hint(NotificationHint::Resident(true))
-            .show()
-            .map_err(|err| ExecutorError::Notifier(err.to_string()))
-            .map(|r| context)
     }
 }

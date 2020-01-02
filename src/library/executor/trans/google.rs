@@ -1,20 +1,24 @@
 use super::Translator;
 use super::error::TranslationError;
+use super::{Translated, Lang};
 use std::collections::HashMap;
 use reqwest::Url;
 use serde::{Deserialize, Serialize};
 
+
 pub struct GoogleTranslator;
 
 impl Translator for GoogleTranslator {
-    fn translate(&self, text: &String) -> Result<String, TranslationError> {
+    fn translate(&self, text: &String) -> Result<Translated, TranslationError> {
         let response = self.request(text)
             .map_err(|err| TranslationError::Connection)?;
 
         let parsed: Response = serde_json::from_str(&response)
             .map_err(|err| TranslationError::Connection)?;
 
-        Ok(parsed.sentences.first().ok_or(TranslationError::Connection)?.trans.to_owned())
+        let res = parsed.sentences.first().ok_or(TranslationError::Connection)?;
+
+        Ok(Translated::new(&res.trans, &Lang::Custom(parsed.src)))
     }
 
     fn get_name(&self) -> String {
