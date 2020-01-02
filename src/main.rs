@@ -22,6 +22,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 },
                 Some("set-primary-lang") => unimplemented!(),
                 Some("set-secondary-lang") => unimplemented!(),
+                Some("set-translator") => unimplemented!(),
                 Some("info") => unimplemented!(),
                 _ => unreachable!()
             }

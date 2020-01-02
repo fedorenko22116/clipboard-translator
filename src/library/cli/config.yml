@@ -19,5 +19,13 @@ subcommands:
             help: Language to set
             required: true
             index: 1
+  - set-translator:
+      about: 'Set translator. Available types: "Google"'
+      args:
+        - lang:
+            short: l
+            help: Language to set
+            required: true
+            index: 1
   - info:
       about: Show config settings
