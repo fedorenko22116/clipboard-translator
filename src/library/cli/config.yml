@@ -1,0 +1,23 @@
+name: .
+version: "1.0"
+subcommands:
+  - translate:
+      about: Show translated text from clipboard as notification
+  - set-primary-lang:
+      about: Set primary language to translate
+      args:
+        - lang:
+            short: l
+            help: Language to set
+            required: true
+            index: 1
+  - set-secondary-lang:
+      about: Set secondary language use to reverse translate
+      args:
+        - lang:
+            short: l
+            help: Language to set
+            required: true
+            index: 1
+  - info:
+      about: Show config settings
