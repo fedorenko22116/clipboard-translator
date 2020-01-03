@@ -1,6 +1,5 @@
 use super::trans::TranslationError;
-use std::fmt::{Debug};
-use std::error::Error;
+use std::{error::Error, fmt::Debug};
 
 #[derive(Debug, Clone)]
 pub enum ExecutorError {
