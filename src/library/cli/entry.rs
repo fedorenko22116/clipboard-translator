@@ -1,5 +1,6 @@
 use clap::{App, AppSettings};
 use std::{collections::HashMap, error::Error};
+use super::Command;
 
 #[derive(Clone)]
 pub struct EntryBuilder {
@@ -52,7 +53,7 @@ pub struct Entry {
 impl Entry {
     pub fn start(
         &self,
-        matcher: fn(Option<&str>) -> Result<(), Box<dyn Error>>,
+        matcher: fn(Command) -> Result<(), Box<dyn Error>>,
     ) -> Result<(), Box<dyn Error>> {
         let package_name = self
             .name
@@ -79,6 +80,10 @@ impl Entry {
             .version(version.as_str())
             .get_matches();
 
-        matcher(matches.subcommand_name())
+        if let Some(command) = matches.subcommand_name() {
+            matcher(Command::from(command))?;
+        }
+
+        Ok(())
     }
 }

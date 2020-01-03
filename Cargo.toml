@@ -1,7 +1,7 @@
 [package]
 name = "key-translator"
 version = "0.1.0"
-authors = ["victor.fedorenko <victor.fedorenko@mgid.com>"]
+authors = ["victor.fedorenko <fedorenko22116@gmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
