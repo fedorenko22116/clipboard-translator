@@ -3,7 +3,7 @@ extern crate clap;
 
 mod library;
 
-use crate::library::{EntryBuilder, Executor, Type, Command};
+use crate::library::{Command, EntryBuilder, Executor, Type};
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -13,13 +13,14 @@ fn main() -> Result<(), Box<dyn Error>> {
         .version(env!("CARGO_PKG_VERSION"))
         .build()
         .start(|command| match command {
-            Command::Translate => Executor::new(&Type::Google)
-                .show_translation()
-                .map(|_r| ())
-                .map_err(|err| err.into()),
-            Command::SetPrimaryLanguage => unimplemented!(),
-            Command::SetSecondaryLanguage => unimplemented!(),
-            Command::SetTranslator => unimplemented!(),
-            Command::Info => unimplemented!()
+            Command::Translate(pl, sl, translator) => {
+                Executor::new(&Type::from(translator.to_owned()))
+                    .show_translation(&pl, &sl, &translator)
+                    .map(|r| {
+                        println!("{}", r.text);
+                        ()
+                    })
+                    .map_err(|err| err.into())
+            }
         })
 }

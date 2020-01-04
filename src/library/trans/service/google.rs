@@ -2,6 +2,7 @@ use super::{error::TranslationError, Lang, Translated, TranslatorService};
 use reqwest::Url;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use fake_useragent::{UserAgentsBuilder, Browsers};
 
 pub struct GoogleTranslator;
 
@@ -42,11 +43,26 @@ impl GoogleTranslator {
         let client = reqwest::blocking::Client::new();
         let request = client.get(url.as_str()).header(
             "User-Agent",
-            "AndroidTranslate/5.3.0.RC02.130475354-53000263 5.1 phone TRANSLATE_OPM5_TEST_1"
-                .to_string(),
+            self.get_ua(),
         );
 
         Ok(request.send()?.text()?)
+    }
+
+    fn get_ua(&self) -> String {
+        UserAgentsBuilder::new()
+            .cache(false)
+            .dir("/tmp")
+            .thread(20)
+            .set_browsers(
+                Browsers::new()
+                    .set_chrome()
+                    .set_firefox()
+                    .set_safari()
+            )
+            .build()
+            .random()
+            .to_string()
     }
 }
 

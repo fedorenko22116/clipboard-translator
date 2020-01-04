@@ -1,6 +1,6 @@
+use super::Command;
 use clap::{App, AppSettings};
 use std::{collections::HashMap, error::Error};
-use super::Command;
 
 #[derive(Clone)]
 pub struct EntryBuilder {
@@ -81,7 +81,7 @@ impl Entry {
             .get_matches();
 
         if let Some(command) = matches.subcommand_name() {
-            matcher(Command::from(command))?;
+            matcher(Command::from(matches.subcommand()))?;
         }
 
         Ok(())

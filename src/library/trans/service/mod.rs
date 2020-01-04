@@ -36,6 +36,21 @@ impl Type {
     }
 }
 
+impl<T: Into<String>> From<Option<T>> for Type {
+    fn from(t: Option<T>) -> Self {
+        if let None = t {
+            return Type::Google;
+        }
+
+        let t = t.unwrap().into();
+
+        match t.as_str() {
+            "Google" => Type::Google,
+            _ => panic!("Unimplemented translator type"),
+        }
+    }
+}
+
 impl std::fmt::Display for Type {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(

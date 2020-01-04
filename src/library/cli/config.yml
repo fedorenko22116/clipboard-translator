@@ -3,29 +3,22 @@ version: "1.0"
 subcommands:
   - translate:
       about: Show translated text from clipboard as notification
-  - set-primary-lang:
-      about: Set primary language to translate
       args:
-        - lang:
-            short: l
-            help: Language to set
+        - primary-lang:
+            short: p
+            help: Target language to translate
             required: true
+            takes_value: true
             index: 1
-  - set-secondary-lang:
-      about: Set secondary language use to reverse translate
-      args:
-        - lang:
-            short: l
-            help: Language to set
-            required: true
-            index: 1
-  - set-translator:
-      about: 'Set translator. Available types: "Google"'
-      args:
-        - lang:
-            short: l
-            help: Language to set
-            required: true
-            index: 1
-  - info:
-      about: Show config settings
+        - secondary-lang:
+            short: s
+            help: Language used to fallback translation
+            required: false
+            takes_value: true
+            index: 2
+        - translator:
+            short: t
+            help: "Translator used. Available translators: 'Google'"
+            required: false
+            takes_value: true
+            index: 3

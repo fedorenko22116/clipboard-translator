@@ -26,21 +26,42 @@ impl Executor {
         }
     }
 
-    pub fn show_translation(&self) -> ExecutorResult<ExecutorResultContext> {
+    pub fn show_translation(
+        &self,
+        pl: &String,
+        sl: &Option<String>,
+        service: &Option<String>,
+    ) -> ExecutorResult<ExecutorResultContext> {
         let source_text = self.get_clipboard_text()?;
         let translator = Translator::new(&self.selected_type);
 
         let context = translator
-            .translate(&source_text, &Lang::Custom("en".to_string()))
+            .translate(&source_text, &Lang::Custom(pl.to_owned()))
             .map(|t| ExecutorResultContext {
                 service: self.selected_type.to_string(),
                 lang: t.lang.to_string(),
                 text: t.text,
                 source_text,
             })
-            .map_err(|err| ExecutorError::Translation(err))?;
+            .map_err(|err| {
+                notifier::notify(
+                    "Error",
+                    &self.selected_type.to_string(),
+                    "Something went wrong!",
+                )
+                .unwrap_or_default();
 
-        notifier::notify(&context.service, &context.lang, &context.text);
+                ExecutorError::Translation(err)
+            })?;
+
+        if context.lang.to_string().eq(pl) {
+            if let Some(sl) = sl {
+                return self.show_translation(sl, &None, &service);
+            }
+        }
+
+        notifier::notify(&context.service, &context.lang, &context.text)
+            .map_err(|err| ExecutorError::Notifier(err.to_string()))?;
 
         Ok(context)
     }
