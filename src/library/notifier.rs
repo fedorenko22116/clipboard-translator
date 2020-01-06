@@ -1,3 +1,4 @@
+#[cfg(not(target_os = "windows"))]
 use notify_rust::{Notification, NotificationHint};
 use std::error::Error;
 
