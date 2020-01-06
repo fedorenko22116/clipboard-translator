@@ -28,16 +28,16 @@ USAGE:
   key-translator translate <primary-lang> [ARGS]
 
 FLAGS:
-    -h, --help       Prints help information
-    -n               Do not send the system notification with translated text
-    -V, --version    Prints version information
+    -h, --help          Prints help information
+    -n, --not-notify    Do not send the system notification with translated text
+        --selected      Translate selected text instead of text from clipboard. Requires 'xsel' module on the system to
+                        be installed
+    -V, --version       Prints version information
 
 ARGS:
     <primary-lang>      Target language to translate
     <secondary-lang>    Language used to fallback translation
     <translator>        Translator used. Available translators: 'Google'
-    <selected>          Translate selected text instead of text from clipboard. Requires 'xsel' module on the system
-                        to be installed
 ```
 
 Examples:
