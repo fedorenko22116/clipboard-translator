@@ -13,14 +13,14 @@ subcommands:
         - secondary-lang:
             short: s
             long: secondary-lang
-            help: Language used to fallback translation
+            help: Language used to fallback translation (Used as source language for 'MyMemory' translator type)
             required: false
             takes_value: true
             index: 2
         - translator:
             short: t
             long: translator
-            help: "Translator used. Available translators: 'Google'"
+            help: "Translator used. Available translators: 'Google', 'MyMemory'"
             required: false
             takes_value: true
             index: 3

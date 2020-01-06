@@ -18,7 +18,14 @@ impl Translator {
         }
     }
 
-    pub fn translate<T: Into<String>>(&self, text: T, lang: &Lang) -> TranslateResult {
-        self._type.get_translator().translate(&text.into(), lang)
+    pub fn translate<T: Into<String>>(
+        &self,
+        text: T,
+        s_lang: &Lang,
+        t_lang: &Lang,
+    ) -> TranslateResult {
+        self._type
+            .get_translator()
+            .translate(&text.into(), &s_lang, &t_lang)
     }
 }

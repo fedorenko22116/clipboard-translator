@@ -1,6 +1,8 @@
 use clipboard::{ClipboardContext, ClipboardProvider};
-use std::error::Error;
-use std::process::{Command, Stdio};
+use std::{
+    error::Error,
+    process::{Command, Stdio},
+};
 
 pub trait Storage {
     fn get(&self) -> Result<String, Box<dyn Error>>;

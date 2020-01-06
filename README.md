@@ -36,8 +36,9 @@ FLAGS:
 
 ARGS:
     <primary-lang>      Target language to translate
-    <secondary-lang>    Language used to fallback translation
-    <translator>        Translator used. Available translators: 'Google'
+    <secondary-lang>    Language used to fallback translation (Used as source language for 'MyMemory' translator
+                        type)
+    <translator>        Translator used. Available translators: 'Google', 'MyMemory'
 ```
 
 Examples:
@@ -48,11 +49,17 @@ clipboard-translator en ru
 clipboard-translator en ru Google
 clipboard-translator en ru Google --selected
 clipboard-translator en ru Google --selected --not-notify
+clipboard-translator en ru MyMemory
 ```
 
 ## Configuring
 
 Just add the command `clipboard-translator en` as a hotkey on your system
+
+### Translators
+
+* Google (Internal API)
+* [MyMemory](https://mymemory.translated.net/)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

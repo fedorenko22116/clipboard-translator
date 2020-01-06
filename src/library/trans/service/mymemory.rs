@@ -3,9 +3,9 @@ use reqwest::Url;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-pub struct GoogleTranslator;
+pub struct MyMemoryTranslator;
 
-impl TranslatorService for GoogleTranslator {
+impl TranslatorService for MyMemoryTranslator {
     fn translate(
         &self,
         text: &String,
@@ -13,31 +13,33 @@ impl TranslatorService for GoogleTranslator {
         t_lang: &Lang,
     ) -> Result<Translated, TranslationError> {
         let response = self
-            .request(text, &t_lang.to_owned().to_string())
+            .request(
+                text,
+                &s_lang.to_owned().to_string(),
+                &t_lang.to_owned().to_string(),
+            )
             .map_err(|err| TranslationError::Connection)?;
 
         let parsed: Response =
             serde_json::from_str(&response).map_err(|err| TranslationError::Connection)?;
 
-        let res = parsed
-            .sentences
-            .first()
-            .ok_or(TranslationError::Connection)?;
+        let res = parsed.matches.first().ok_or(TranslationError::Connection)?;
 
-        Ok(Translated::new(&res.trans, &Lang::Custom(parsed.src)))
+        Ok(Translated::new(&res.translation, &s_lang))
     }
 }
 
-impl GoogleTranslator {
-    fn request(&self, text: &String, lang: &String) -> Result<String, Box<dyn std::error::Error>> {
+impl MyMemoryTranslator {
+    fn request(
+        &self,
+        text: &String,
+        s_lang: &String,
+        t_lang: &String,
+    ) -> Result<String, Box<dyn std::error::Error>> {
         let url = Url::parse_with_params(
-            "https://translate.googleapis.com/translate_a/single",
+            "https://api.mymemory.translated.net/get",
             &[
-                ("client", "at"),
-                ("tl", lang),
-                ("sl", "auto"),
-                ("dt", "t"),
-                ("dj", "1"),
+                ("langpair", &format!("{}|{}", s_lang, t_lang)),
                 ("q", &text),
             ],
         )
@@ -53,12 +55,10 @@ impl GoogleTranslator {
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Response {
-    sentences: Vec<Trans>,
-    src: String,
+    matches: Vec<Matches>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Trans {
-    trans: String,
-    orig: String,
+struct Matches {
+    translation: String,
 }

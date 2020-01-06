@@ -1,12 +1,25 @@
 mod error;
 mod google;
+mod mymemory;
 
 use super::TranslateResult;
+use crate::library::trans::service::mymemory::MyMemoryTranslator;
 pub use error::TranslationError;
+use fake_useragent::{Browsers, UserAgentsBuilder};
 pub use google::GoogleTranslator;
 
 pub trait TranslatorService {
-    fn translate(&self, text: &String, lang: &Lang) -> TranslateResult;
+    fn translate(&self, text: &String, s_lang: &Lang, t_lang: &Lang) -> TranslateResult;
+    fn get_ua(&self) -> String {
+        UserAgentsBuilder::new()
+            .cache(false)
+            .dir("/tmp")
+            .thread(20)
+            .set_browsers(Browsers::new().set_chrome().set_firefox().set_safari())
+            .build()
+            .random()
+            .to_string()
+    }
 }
 
 pub struct Translated {
@@ -26,13 +39,16 @@ impl Translated {
 #[derive(Debug, Clone)]
 pub enum Type {
     Google,
+    MyMemory,
 }
 
 impl Type {
     pub(super) fn get_translator(&self) -> Box<dyn TranslatorService> {
-        Box::new(match self {
-            Type::Google => GoogleTranslator,
-        })
+        if let Type::MyMemory = self {
+            return Box::new(MyMemoryTranslator);
+        }
+
+        Box::new(GoogleTranslator)
     }
 }
 
@@ -46,6 +62,7 @@ impl<T: Into<String>> From<Option<T>> for Type {
 
         match t.as_str() {
             "Google" => Type::Google,
+            "MyMemory" => Type::MyMemory,
             _ => panic!("Unimplemented translator type"),
         }
     }
@@ -58,6 +75,7 @@ impl std::fmt::Display for Type {
             "{}",
             match self {
                 Type::Google => "Google",
+                Type::MyMemory => "MyMemory",
             }
         )
     }
@@ -66,6 +84,7 @@ impl std::fmt::Display for Type {
 #[derive(Clone)]
 pub enum Lang {
     Custom(String),
+    Auto,
 }
 
 impl std::fmt::Display for Lang {
@@ -75,6 +94,7 @@ impl std::fmt::Display for Lang {
             "{}",
             match self {
                 Lang::Custom(text) => text.to_lowercase(),
+                Lang::Auto => "auto".to_string(),
             }
         )
     }
