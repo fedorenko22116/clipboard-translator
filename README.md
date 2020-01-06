@@ -25,7 +25,7 @@ clipboard-translator-translate
 Show translated text from clipboard as notification
 
 USAGE:
-  key-translator translate <primary-lang> [ARGS]
+  clipboard-translator translate <primary-lang> [ARGS]
 
 FLAGS:
     -h, --help          Prints help information
