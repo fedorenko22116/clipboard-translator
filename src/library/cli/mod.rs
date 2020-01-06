@@ -4,7 +4,7 @@ use clap::ArgMatches;
 pub use entry::EntryBuilder;
 
 pub enum Command {
-    Translate(String, Option<String>, Option<String>),
+    Translate(String, Option<String>, Option<String>, bool, bool),
 }
 
 impl<'a> From<(&str, Option<&ArgMatches<'a>>)> for Command {
@@ -16,6 +16,8 @@ impl<'a> From<(&str, Option<&ArgMatches<'a>>)> for Command {
                     .value_of("secondary-lang")
                     .map(|a| a.to_owned()),
                 s.1.unwrap().value_of("translator").map(|a| a.to_owned()),
+                s.1.unwrap().is_present("not-notify"),
+                s.1.unwrap().is_present("selected"),
             ),
             _ => panic!("Undefined command given"),
         }

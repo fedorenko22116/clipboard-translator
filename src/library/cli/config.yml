@@ -22,3 +22,10 @@ subcommands:
             required: false
             takes_value: true
             index: 3
+        - not-notify:
+            short: n
+            help: Do not send the system notification with translated text
+            required: false
+        - selected:
+            help: Translate selected text instead of text from clipboard. Requires 'xsel' module on the system to be installed
+            required: false

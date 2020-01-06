@@ -10,8 +10,7 @@ where
     S: Into<String>,
     U: Into<String>,
 {
-    notifica::notify(TRANSLATOR_TITLE, body.into());
-    Ok(())
+    unimplemented!()
 }
 
 #[cfg(not(target_os = "windows"))]

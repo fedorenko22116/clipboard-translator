@@ -5,6 +5,7 @@ pub use error::ExecutorError;
 use notify_rust::{Error, Notification, NotificationHandle, NotificationHint};
 use std::borrow::Borrow;
 use trans::{GoogleTranslator, Lang, TranslateResult, Translator, Type};
+use crate::library::storage::get_storage;
 
 pub type ExecutorResult<T> = Result<T, error::ExecutorError>;
 
@@ -31,8 +32,10 @@ impl Executor {
         pl: &String,
         sl: &Option<String>,
         service: &Option<String>,
+        not_notify: &bool,
+        selected: &bool,
     ) -> ExecutorResult<ExecutorResultContext> {
-        let source_text = self.get_clipboard_text()?;
+        let source_text = self.get_text(selected)?;
         let translator = Translator::new(&self.selected_type);
 
         let context = translator
@@ -56,20 +59,22 @@ impl Executor {
 
         if context.lang.to_string().eq(pl) {
             if let Some(sl) = sl {
-                return self.show_translation(sl, &None, &service);
+                return self.show_translation(sl, &None, &service, &not_notify, &selected);
             }
         }
 
-        notifier::notify(&context.service, &context.lang, &context.text)
-            .map_err(|err| ExecutorError::Notifier(err.to_string()))?;
+        if !*not_notify {
+            notifier::notify(&context.service, &context.lang, &context.text)
+                .map_err(|err| ExecutorError::Notifier(err.to_string()))?;
+        }
 
         Ok(context)
     }
 
-    fn get_clipboard_text(&self) -> ExecutorResult<String> {
-        let mut context: ClipboardContext = ClipboardProvider::new().unwrap();
-        context
-            .get_contents()
+    fn get_text(&self, use_selected: &bool) -> ExecutorResult<String> {
+        let mut storage = get_storage(use_selected);
+        storage
+            .get()
             .map_err(|err| ExecutorError::Clipboard(err.to_string()))
     }
 }
