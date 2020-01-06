@@ -54,7 +54,7 @@ clipboard-translator translate en ru MyMemory
 
 ## Configuring
 
-Just add the command `clipboard-translator en` as a hotkey on your system
+Just add the command `clipboard-translator translate en` as a hotkey on your system
 
 ### Translators
 
