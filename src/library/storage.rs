@@ -24,7 +24,7 @@ impl Storage for Selected {
             .stdout(Stdio::null())
             .output()
             .map(|output| String::from_utf8_lossy(&output.stdout).to_string())
-            .map_err(|err| err.into())
+            .map_err(|err| "'xsel' library is not installed".into())
     }
 }
 
