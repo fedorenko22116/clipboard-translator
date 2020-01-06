@@ -1,5 +1,9 @@
 #[cfg(not(target_os = "windows"))]
 use notify_rust::{Notification, NotificationHint};
+
+#[cfg(target_os = "windows")]
+use winrt_notification::{Duration, Sound, Toast};
+
 use std::error::Error;
 
 const TRANSLATOR_TITLE: &str = "Clipboard Translator";
@@ -11,7 +15,15 @@ where
     S: Into<String>,
     U: Into<String>,
 {
-    unimplemented!()
+    let body = body.into();
+
+    Toast::new(Toast::POWERSHELL_APP_ID)
+        .title(TRANSLATOR_TITLE)
+        .text1(&body)
+        .sound(Some(Sound::SMS))
+        .duration(Duration::Short)
+        .show()
+        .map_err(|err| err.into())
 }
 
 #[cfg(not(target_os = "windows"))]
