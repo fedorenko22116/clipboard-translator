@@ -44,12 +44,12 @@ ARGS:
 Examples:
 
 ```bash
-clipboard-translator en
-clipboard-translator en ru
-clipboard-translator en ru Google
-clipboard-translator en ru Google --selected
-clipboard-translator en ru Google --selected --not-notify
-clipboard-translator en ru MyMemory
+clipboard-translator translate en
+clipboard-translator translate en ru
+clipboard-translator translate en ru Google
+clipboard-translator translate en ru Google --selected
+clipboard-translator translate en ru Google --selected --not-notify
+clipboard-translator translate en ru MyMemory
 ```
 
 ## Configuring
