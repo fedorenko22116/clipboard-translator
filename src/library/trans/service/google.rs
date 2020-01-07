@@ -33,7 +33,7 @@ impl GoogleTranslator {
         let url = Url::parse_with_params(
             "https://translate.googleapis.com/translate_a/single",
             &[
-                ("client", "at"),
+                ("client", "gtx"),
                 ("tl", lang),
                 ("sl", "auto"),
                 ("dt", "t"),
