@@ -1,6 +1,6 @@
 [package]
 name = "clipboard-translator"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["victor.fedorenko <fedorenko22116@gmail.com>"]
 edition = "2018"
 license = "MIT"
