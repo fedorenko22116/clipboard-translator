@@ -3,7 +3,6 @@ use crate::library::{error, notifier, trans};
 use crate::library::storage::get_storage;
 use clipboard::{ClipboardContext, ClipboardProvider};
 pub use error::ExecutorError;
-use notify_rust::{Error, Notification, NotificationHandle, NotificationHint};
 use std::borrow::Borrow;
 use trans::{GoogleTranslator, Lang, TranslateResult, Translator, Type};
 

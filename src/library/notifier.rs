@@ -23,7 +23,7 @@ where
         .sound(Some(Sound::SMS))
         .duration(Duration::Short)
         .show()
-        .map_err(|err| err.into())
+        .map_err(|_err| "Notification error".into())
 }
 
 #[cfg(not(target_os = "windows"))]
