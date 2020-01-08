@@ -7,12 +7,16 @@ jobs:
     name: Rust project
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1.0
-      - uses: mr-smithers-excellent/docker-build-push@v1.0
+      - name: Login to docker hub
+        uses: actions-hub/docker/login@master
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build :latest
+        run: docker build -t 22116/clipboard-translator:latest .
+
+      - name: Push to docker hub :latest
+        uses: actions-hub/docker@master
         with:
-          image: 22116/clipboard-translator
-          tag: latest
-          registry: hub.docker.com
-          dockerfile: Dockerfile
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          args: push 22116/clipboard-translator:latest
