@@ -26,13 +26,14 @@ impl Executor {
         }
     }
 
-    pub fn show_translation(
+    pub fn execute_translate(
         &self,
         pl: &String,
         sl: &Option<String>,
         service: &Option<String>,
         not_notify: &bool,
         selected: &bool,
+        copy: &bool,
     ) -> ExecutorResult<ExecutorResultContext> {
         let source_text = self.get_text(selected)?;
         let translator = Translator::new(&self.selected_type);
@@ -62,13 +63,18 @@ impl Executor {
 
         if context.lang.to_string().eq(pl) {
             if let Some(sl) = sl {
-                return self.show_translation(sl, &None, &service, &not_notify, &selected);
+                return self.execute_translate(sl, &None, &service, &not_notify, &selected, &copy);
             }
         }
 
         if !*not_notify {
             notifier::notify(&context.service, &context.lang, &context.text)
                 .map_err(|err| ExecutorError::Notifier(err.to_string()))?;
+        }
+
+        if *copy {
+            let mut clipboard: ClipboardContext = ClipboardProvider::new().unwrap();
+            clipboard.set_contents(context.text.to_owned());
         }
 
         Ok(context)

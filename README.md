@@ -25,9 +25,10 @@ clipboard-translator-translate
 Show translated text from clipboard as notification
 
 USAGE:
-  clipboard-translator translate <primary-lang> [ARGS]
+    clipboard-translator translate [FLAGS] <primary-lang> [ARGS]
 
 FLAGS:
+    -c, --copy          Copy translated text to clipboard
     -h, --help          Prints help information
     -n, --not-notify    Do not send the system notification with translated text
         --selected      Translate selected text instead of text from clipboard. Requires 'xsel' module on the system to
@@ -49,7 +50,7 @@ clipboard-translator translate en ru
 clipboard-translator translate en ru Google
 clipboard-translator translate en ru Google --selected
 clipboard-translator translate en ru Google --selected --not-notify
-clipboard-translator translate en ru MyMemory
+clipboard-translator translate en ru MyMemory --copy
 ```
 
 ## Configuring

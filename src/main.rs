@@ -13,9 +13,9 @@ fn main() -> Result<(), Box<dyn Error>> {
         .version(env!("CARGO_PKG_VERSION"))
         .build()
         .start(|command| match command {
-            Command::Translate(pl, sl, translator, not_notify, selected) => {
+            Command::Translate(pl, sl, translator, not_notify, selected, copy) => {
                 Executor::new(&Type::from(translator.to_owned()))
-                    .show_translation(&pl, &sl, &translator, &not_notify, &selected)
+                    .execute_translate(&pl, &sl, &translator, &not_notify, &selected, &copy)
                     .map(|r| {
                         println!("{}", r.text);
                         ()

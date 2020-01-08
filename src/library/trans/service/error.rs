@@ -1,6 +1,7 @@
 #[derive(Debug, Clone)]
 pub enum TranslationError {
     Connection,
+    Directory,
 }
 
 impl std::error::Error for TranslationError {
@@ -16,6 +17,7 @@ impl std::fmt::Display for TranslationError {
             "{}",
             match self {
                 TranslationError::Connection => "Cannot connect to the service host",
+                TranslationError::Directory => "Cannot create a cache dir",
             }
         )
     }

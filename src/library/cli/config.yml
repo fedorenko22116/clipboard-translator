@@ -33,3 +33,8 @@ subcommands:
             long: selected
             help: Translate selected text instead of text from clipboard. Requires 'xsel' module on the system to be installed
             required: false
+        - copy:
+            short: c
+            long: copy
+            help: Copy translated text to clipboard
+            required: false
