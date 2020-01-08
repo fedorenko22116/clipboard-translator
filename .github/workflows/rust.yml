@@ -1,0 +1,14 @@
+on: [push, pull_request]
+
+name: CI
+
+jobs:
+  build_and_test:
+    name: Rust project
+    runs-on: [macos-latest, linux-latest]
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release
