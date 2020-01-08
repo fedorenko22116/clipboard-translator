@@ -1,8 +1,8 @@
 name: Publish Docker
-on: [push]
+on: [push, pull_request]
 jobs:
   build:
-    runs-on: debian-latest
+    runs-on: ubuntu-16.04
     steps:
       - uses: actions/checkout@master
       - name: Publish to Registry
