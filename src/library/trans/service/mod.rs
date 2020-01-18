@@ -5,34 +5,14 @@ mod mymemory;
 use super::TranslateResult;
 use crate::library::trans::service::mymemory::MyMemoryTranslator;
 pub use error::TranslationError;
-use fake_useragent::{Browsers, UserAgentsBuilder};
 pub use google::GoogleTranslator;
 
 pub trait TranslatorService {
     fn translate(&self, text: &String, s_lang: &Lang, t_lang: &Lang) -> TranslateResult;
     fn get_ua(&self) -> String {
-        fn ua() -> Result<String, TranslationError> {
-            Ok(UserAgentsBuilder::new()
-                .cache(true)
-                .dir(
-                    dirs::cache_dir()
-                        .ok_or(TranslationError::Directory)?
-                        .as_path()
-                        .to_str()
-                        .unwrap(),
-                )
-                .thread(20)
-                .set_browsers(Browsers::new().set_chrome().set_firefox().set_safari())
-                .build()
-                .random()
-                .to_string())
-        }
-
-        ua().unwrap_or(
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like \
-             Gecko) Chrome/79.0.3945.117 Safari/537.36"
-                .to_string(),
-        )
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like \
+         Gecko) Chrome/79.0.3945.117 Safari/537.36"
+            .to_string()
     }
 }
 
